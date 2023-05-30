@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 import utils
 from sklearn import preprocessing
-import category_encoders as ce
+
 
 from generate_complete_df import add_label_col
 
@@ -39,13 +39,12 @@ def create_dataset_from_table(files_df_dict, config, inference=False, change_lab
                         inference_flow=False,
                         ):
         df_data = df  # df.copy()
-        if target_col is not None:
-            df_data.loc[:, target_col] = df_data.loc[:, target_col].map({'True': 1, 'False': 0})
-        # label_enc_dict = {col: preprocessing.LabelEncoder() for col in cat_to_num_cols+[target_col]}
-        label_enc_dict = {col: ce.CatBoostEncoder() for col in cat_to_num_cols + [target_col]}
-        cols_to_encode = cat_to_num_cols if not inference else cat_to_num_cols
+        # if target_col is not None:
+        #     df_data.loc[:, target_col] = df_data.loc[:, target_col].map({'True': 1, 'False': 0})
+        label_enc_dict = {col: preprocessing.LabelEncoder() for col in cat_to_num_cols+[target_col]}
+        cols_to_encode = cat_to_num_cols+[target_col] if not inference else cat_to_num_cols
         for col in cols_to_encode:
-            df_data.loc[:, col] = label_enc_dict[col].fit_transform(df_data.loc[:, col], df_data.loc[:, target_col])
+            df_data.loc[:, col] = label_enc_dict[col].fit_transform(df_data.loc[:, col])
 
         # Datetime to timestamp
         first = True

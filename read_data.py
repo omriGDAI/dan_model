@@ -131,7 +131,7 @@ def main(config_path, test=False):
     parser = utils.parse_args_from_dict(config)
 
     files_df_dict = read_data(parser)
-
+    utils.dump_df_dict(files_df_dict)
     # TODO: replace with save to DB
     path = utils.dump_to_pickle(obj=files_df_dict,
                                 filename='block_0_read_data',

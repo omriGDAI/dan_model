@@ -1,5 +1,7 @@
 import argparse
 import json
+from sqlalchemy import create_engine
+import psycopg2
 
 """###### Utils"""
 
@@ -71,3 +73,52 @@ def generate_log_file(log_path, data_type, learn_task_vip, search=False, sum_dep
     path = pjoin(path, filename)
     log = open(path, "w")
     return log
+
+
+def dump_df_to_db(df, table_name):
+    # Define the connection information
+    db_endpoint = "demo-db.ctk9oi0waozt.eu-north-1.rds.amazonaws.com"
+    db_port = 5432
+    db_username = "GDAI_ADMIN"
+    db_password = "7fq_{R):.#!3+[D12eP<<lJV+6>y"
+    db_name = "postgres"  # Replace with your actual database name
+
+    # Establish a connection to the PostgreSQL database
+    engine = create_engine(f"postgresql://{db_username}:{db_password}@{db_endpoint}:{db_port}/{db_name}")
+
+    # Write the DataFrame to the PostgreSQL database table
+    table_name = table_name
+    df.to_sql(table_name, engine, if_exists='replace', index=False)
+
+    # Close the database connection
+    engine.dispose()
+
+    print("Data has been written to the PostgreSQL database successfully!")
+
+
+def dump_df_dict(df_dict: dict):
+    for df_name, df in df_dict.items():
+        if isinstance(df, pd.DataFrame):
+            dump_df_to_db(df, df_name)
+
+
+def read_table_from_db(table_name):
+    conn = psycopg2.connect(
+        host="demo-db.ctk9oi0waozt.eu-north-1.rds.amazonaws.com",
+        port=5432,
+        database="postgres",
+        user="GDAI_ADMIN",
+        password="7fq_{R):.#!3+[D12eP<<lJV+6>y"
+    )
+
+    query = f"SELECT * FROM {table_name}"
+    df = pd.read_sql(query, conn)
+    return df
+
+
+def read_dict_from_db():
+    db_dict = {}
+    tabels_names = ["CustomersExport_001", "sports", "casinoExport", "TransactionsExport"]
+    for tabels_name in tabels_names:
+        db_dict[tabels_name] = read_table_from_db(tabels_name)
+    return db_dict
