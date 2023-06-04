@@ -14,7 +14,7 @@ from utils import generate_log_file
 
 # TODO: Change random seed to const.
 # # (Data needs to be in data folder in working dir if Using STARTING_BLOCK)
-STARTING_BLOCK = 2  # Block to start from - * if you want a full flow put 0 *
+STARTING_BLOCK = 0  # Block to start from - * if you want a full flow put 0 *
 
 INFERENCE_FLOW = False  # No training, no labels, no metrics check
 
@@ -23,7 +23,7 @@ CHANGE_LABEL = False  # When just changing label and loading data - i.e. not rea
 
 SEARCH_PARAMS = False  # GridsearchCV/RandomCV execution (for train_model block)
 
-TEST = False  # Sampling TEST_FRAC num of bets  - test purpose
+TEST = True  # Sampling TEST_FRAC num of bets  - test purpose
 TEST_FRAC = 0.1
 
 #########################################################################################

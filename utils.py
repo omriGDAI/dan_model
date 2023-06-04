@@ -118,7 +118,7 @@ def read_table_from_db(table_name):
 
 def read_dict_from_db():
     db_dict = {}
-    tabels_names = ["CustomersExport_001", "sports", "casinoExport", "TransactionsExport"]
+    tabels_names = ["casinoExport"]  # ["CustomersExport_001", "sports", "casinoExport", "TransactionsExport"]
     for tabels_name in tabels_names:
         db_dict[tabels_name] = read_table_from_db(tabels_name)
     return db_dict
