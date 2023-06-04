@@ -35,6 +35,23 @@ config_path_dict = test_blocks.generate_config_files(config_folder_path=config_p
                                                      learn_task_vip=code_const.TaskVIP,  # VIP or STD Task
                                                      test=TEST)
 # Logs
+# Print before redirecting prints to log
+print_string = f"Current Run: \nData: {code_const.SPORT_OR_CASINO_TASK} \nVIP:{code_const.TaskVIP} "
+print_string += f"\nActive Label is :{int(code_const.ActiveUser_LABEL_is_1)}"
+if not INFERENCE_FLOW:
+    if code_const.TaskVIP:
+        print_string += f"\nVIP SUM: {code_const.VIP_SUM_DEPOSITS}"
+    print_string += f"\nStarting Block:{STARTING_BLOCK}"
+    if TEST:
+        print_string += f"\nFor Test/Development - Sampling {TEST_FRAC*100}% of Data."
+    if SEARCH_PARAMS:
+        print_string += f"\nSearch Parameters: {code_const.SEARCH_PARAMS_TYPE}"
+    if INFERENCE_FLOW:
+        print_string += f"\nSearch Parameters: {code_const.SEARCH_PARAMS_TYPE}"
+else: # INFERENCE FLOW
+    print_string += f"\nInference Flow - No Metrics, No Label For Test"
+
+print(print_string)
 log_path = pjoin(code_const.DATA_FOLDER_PATH, code_const.DATA_DIR, 'logs')
 log = generate_log_file(log_path,
                         data_type=code_const.SPORT_OR_CASINO_TASK,  # Sport or Casino Data
