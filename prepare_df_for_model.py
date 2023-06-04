@@ -39,8 +39,8 @@ def create_dataset_from_table(files_df_dict, config, inference=False, change_lab
                         inference_flow=False,
                         ):
         df_data = df  # df.copy()
-        # if target_col is not None:
-        #     df_data.loc[:, target_col] = df_data.loc[:, target_col].map({'True': 1, 'False': 0})
+        if target_col is not None:
+            df_data.loc[:, target_col] = df_data.loc[:, target_col].astype(str)
         label_enc_dict = {col: preprocessing.LabelEncoder() for col in cat_to_num_cols+[target_col]}
         cols_to_encode = cat_to_num_cols+[target_col] if not inference else cat_to_num_cols
         for col in cols_to_encode:
